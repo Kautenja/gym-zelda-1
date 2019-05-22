@@ -65,6 +65,19 @@ PULSE_2_IM_TYPES = collections.defaultdict(lambda: None, {
 })
 
 
+# a mapping of numeric values to sword types
+# 0x00=None,
+# 0x01=Sword,
+# 0x02=White Sword,
+# 0x03=Magical Sword,
+SWORD_TYPES = collections.defaultdict(lambda: None, {
+    0x00: "None",
+    0x01: "Sword",
+    0x02: "White Sword",
+    0x03: "Magical Sword",
+})
+
+
 class Zelda1Env(NESEnv):
     """An environment for playing The Legend of Zelda with OpenAI Gym."""
 
@@ -110,13 +123,31 @@ class Zelda1Env(NESEnv):
     def _pulse_1_IM_type(self):
         """Return the IM type of pulse 1."""
         # TODO: gives "Small Heart" when text is blitting?
-        return PULSE_1_IM_TYPES[self.ram[0x605]]
+        return PULSE_1_IM_TYPES[self.ram[0x0605]]
 
     @property
     def _pulse_2_IM_type(self):
-        """Return the IM type of pulse 1."""
+        """Return the IM type of pulse 2."""
         # TODO: gives "Bomb" when initial sword is picked up?
-        return PULSE_2_IM_TYPES[self.ram[0x607]]
+        return PULSE_2_IM_TYPES[self.ram[0x0607]]
+
+    @property
+    def _killed_enemy_count(self):
+        """Return thee number of enemies killed on the current screen."""
+        return self.ram[0x0627]
+
+    @property
+    def _number_of_deaths(self):
+        """Return the number of times Link has died (for slot 1)."""
+        # 0630    Number of deaths            save slot 1
+        # 0631    Number of deaths            save slot 2
+        # 0632    Number of deaths            save slot 3
+        return self.ram[0x0630]
+
+    @property
+    def _sword(self):
+        """Return the sword Link has."""
+        return SWORD_TYPES[self.ram[0x0657]]
 
 
     # MARK: RAM Hacks
@@ -186,6 +217,9 @@ class Zelda1Env(NESEnv):
             has_candled=self._has_candled,
             pulse_1=self._pulse_1_IM_type,
             pulse_2=self._pulse_2_IM_type,
+            killed_enemies=self._killed_enemy_count,
+            number_of_deaths=self._number_of_deaths,
+            sword=self._sword,
         )
         print(info)
         return info
