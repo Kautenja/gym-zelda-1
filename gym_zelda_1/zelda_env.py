@@ -23,6 +23,27 @@ DIRECTIONS = collections.defaultdict(lambda: None, {
 })
 
 
+# a mapping of numeric values to string types for pulse 1
+# $80=?,
+# $40=1 Heart Warning,
+# $20=Set Bomb,
+# $10=Small Heart Pickup,
+# $08=Key Pickup,
+# $04=Magic Cast,
+# $02=Boomerang Stun,
+# $01=Arrow Deflected
+PULSE_1_IM_TYPES = collections.defaultdict(lambda: None, {
+    0x80: None, # this value is unknown
+    0x40: "1 Heart Warning",
+    0x20: "Set Bomb",
+    0x10: "Small Heart Pickup",
+    0x08: "Key Pickup",
+    0x04: "Magic Cast",
+    0x02: "Boomerang Stun",
+    0x01: "Arrow Deflected",
+})
+
+
 class Zelda1Env(NESEnv):
     """An environment for playing The Legend of Zelda with OpenAI Gym."""
 
@@ -58,6 +79,22 @@ class Zelda1Env(NESEnv):
     def _is_paused(self):
         """Return True if the game is paused, False otherwise."""
         return bool(self.ram[0xE0])
+
+    @property
+    def _has_candled(self):
+        """Return True if Link has used a candle in the current room"""
+        return bool(self.ram[0x0513])
+
+    @property
+    def _pulse_1_IM_type(self):
+        """Return the IM type of pulse 1."""
+        return PULSE_1_IM_TYPES[self.ram[0x605]]
+
+    @property
+    def _pulse_2_IM_type(self):
+        """Return the IM type of pulse 1."""
+        return None
+
 
     # MARK: RAM Hacks
 
@@ -120,12 +157,16 @@ class Zelda1Env(NESEnv):
 
     def _get_info(self):
         """Return the info after a step occurs"""
-        return dict(
+        info = dict(
             x_pos=self._x_pixel,
             y_pos=self._y_pixel,
             direction=self._direction,
-            is_paused=self._is_paused,
+            has_candled=self._has_candled,
+            pulse_1=self._pulse_1_IM_type,
+            pulse_2=self._pulse_2_IM_type,
         )
+        print(info)
+        return info
 
 
 # explicitly define the outward facing API of this module
