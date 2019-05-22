@@ -1,4 +1,5 @@
 """An OpenAI Gym environment for The Legend of Zelda."""
+import collections
 import os
 from nes_py import NESEnv
 import numpy as np
@@ -10,6 +11,16 @@ MODULE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # the path to the Zelda 1 ROM
 ROM_PATH = os.path.join(MODULE_DIR, '_roms', 'Zelda_1.nes')
+
+
+# a mapping of numeric values to cardinal directions
+# $08=North, $04=South, $01=East, $02=West
+DIRECTIONS = collections.defaultdict(lambda: None, {
+    0x08: 'N',
+    0x04: 'S',
+    0x01: 'E',
+    0x02: 'W',
+})
 
 
 class Zelda1Env(NESEnv):
@@ -29,14 +40,19 @@ class Zelda1Env(NESEnv):
     # MARK: Memory access
 
     @property
-    def _x_position(self):
-        """Return the current horizontal position."""
+    def _x_pixel(self):
+        """Return the current x pixel denoting Link's location."""
         return self.ram[0x70]
 
     @property
-    def _y_position(self):
-        """Return the current vertical position."""
+    def _y_pixel(self):
+        """Return the current y pixel denoting Link's location."""
         return self.ram[0x84]
+
+    @property
+    def _direction(self):
+        """Return the current direction that Link is facing."""
+        return DIRECTIONS[self.ram[0x98]]
 
     # MARK: RAM Hacks
 
@@ -117,7 +133,11 @@ class Zelda1Env(NESEnv):
 
     def _get_info(self):
         """Return the info after a step occurs"""
-        return dict()
+        return dict(
+            x_pos=self._x_pixel,
+            y_pos=self._y_pixel,
+            direction=self._direction
+        )
         # return dict(
         #     coins=self._coins,
         #     flag_get=self._flag_get,
