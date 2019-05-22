@@ -17,6 +17,10 @@
 [python-version]: https://img.shields.io/pypi/pyversions/gym-zelda-1.svg
 [python-home]: https://python.org
 
+<img 
+  src="https://user-images.githubusercontent.com/2184469/58208692-dae16580-7caa-11e9-82cf-2e870c681201.gif" 
+  width="200px" />
+
 An [OpenAI Gym](https://github.com/openai/gym) environment for The Legend of
 Zelda (i.e., Zelda 1) on The Nintendo Entertainment System (NES) based on
 the [nes-py](https://github.com/Kautenja/nes-py) emulator.
