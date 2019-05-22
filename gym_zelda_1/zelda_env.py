@@ -41,18 +41,23 @@ class Zelda1Env(NESEnv):
 
     @property
     def _x_pixel(self):
-        """Return the current x pixel denoting Link's location."""
+        """Return the current x pixel of Link's location."""
         return self.ram[0x70]
 
     @property
     def _y_pixel(self):
-        """Return the current y pixel denoting Link's location."""
+        """Return the current y pixel of Link's location."""
         return self.ram[0x84]
 
     @property
     def _direction(self):
         """Return the current direction that Link is facing."""
         return DIRECTIONS[self.ram[0x98]]
+
+    @property
+    def _is_paused(self):
+        """Return True if the game is paused, False otherwise."""
+        return bool(self.ram[0xE0])
 
     # MARK: RAM Hacks
 
@@ -85,13 +90,11 @@ class Zelda1Env(NESEnv):
 
     def _will_reset(self):
         """Handle and RAM hacking before a reset occurs."""
-        # self._time_last = 0
-        # self._x_position_last = 0
+        pass
 
     def _did_reset(self):
         """Handle any RAM hacking after a reset occurs."""
-        # self._time_last = self._time
-        # self._x_position_last = self._x_position
+        pass
 
     def _did_step(self, done):
         """
@@ -104,20 +107,7 @@ class Zelda1Env(NESEnv):
             None
 
         """
-        # # if done flag is set a reset is incoming anyway, ignore any hacking
-        # if done:
-        #     return
-        # # if mario is dying, then cut to the chase and kill hi,
-        # if self._is_dying:
-        #     self._kill_mario()
-        # # skip world change scenes (must call before other skip methods)
-        # if not self.is_single_stage_env:
-        #     self._skip_end_of_world()
-        # # skip area change (i.e. enter pipe, flag get, etc.)
-        # self._skip_change_area()
-        # # skip occupied states like the black screen between lives that shows
-        # # how many lives the player has left
-        # self._skip_occupied_states()
+        pass
 
     def _get_reward(self):
         """Return the reward after a step occurs."""
@@ -127,29 +117,15 @@ class Zelda1Env(NESEnv):
     def _get_done(self):
         """Return True if the episode is over, False otherwise."""
         return False
-        # if self.is_single_stage_env:
-        #     return self._is_dying or self._is_dead or self._flag_get
-        # return self._is_game_over
 
     def _get_info(self):
         """Return the info after a step occurs"""
         return dict(
             x_pos=self._x_pixel,
             y_pos=self._y_pixel,
-            direction=self._direction
+            direction=self._direction,
+            is_paused=self._is_paused,
         )
-        # return dict(
-        #     coins=self._coins,
-        #     flag_get=self._flag_get,
-        #     life=self._life,
-        #     score=self._score,
-        #     stage=self._stage,
-        #     status=self._player_status,
-        #     time=self._time,
-        #     world=self._world,
-        #     x_pos=self._x_position,
-        #     y_pos=self._y_position,
-        # )
 
 
 # explicitly define the outward facing API of this module
