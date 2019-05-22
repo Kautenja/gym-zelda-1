@@ -27,7 +27,7 @@ matrix:
       script:
         - python setup.py sdist
         - python setup.py install
-        - python scripts/run.py
+        - python run.py
 install:
   - pip3 install -r requirements.txt
 script:
