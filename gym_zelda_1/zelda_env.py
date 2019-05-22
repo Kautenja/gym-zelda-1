@@ -239,13 +239,13 @@ class Zelda1Env(NESEnv):
 
     @property
     def _compass(self):
-        """."""
+        """Return the mapping of which compasses are collected."""
         # 0667    Compass in Inventory        One bit per level
         # 0669    Compass in Inventory        (Level 9)
 
     @property
     def _map(self):
-        """."""
+        """Return the mapping of which maps are collected."""
         # 0668    Map in Inventory            One bit per level
         # 066A    Map in Inventory            (Level 9)
 
@@ -281,10 +281,13 @@ class Zelda1Env(NESEnv):
 
     @property
     def _hearts_remaining(self):
+        """Return the amount of floating point remaining hears."""
         return self._full_hearts_remaining + self._partial_heart_remaining
 
-# TODO:
-# 0671 Triforce pieces. One bit per piece
+    @property
+    def _triforce_pieces(self):
+        """Return the triforce pieces collected."""
+        # 0671 Triforce pieces. One bit per piece
 
     @property
     def _is_boomerang_in_inventory(self):
