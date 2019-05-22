@@ -91,11 +91,42 @@ TODO
 The `info` dictionary returned by the `step` method contains the following
 keys:
 
-| Key         | Type   | Description
-|:------------|:-------|:------------------------------------------------------|
-| `x_pos`     | `int`  | Link's _x_ position in the screen (from the left)
-| `y_pos`     | `int`  | Link's _y_ position in the screen (from the top)
-| `direction` | `str`  | Link's direction as one of _{"N", "S", "E", "W"}_
+| Key                   | Type   | Description
+|:----------------------|:-------|:------------------------------------------------------|
+| `x_pos`               | `int`  | Link's _x_ position in the screen (from the left)
+| `y_pos`               | `int`  | Link's _y_ position in the screen (from the top)
+| `direction`           | `str`  | Link's direction as one of _{"N", "S", "E", "W"}_
+| `has_candled`         | `bool` | Whether Link has candled the current room
+| `pulse_1`             | `str`  | The signal playing through pulse 1
+| `pulse_2`             | `str`  | The signal playing through pulse 2
+| `killed_enemies`      | `int`  | The number of enemies killed
+| `number_of_deaths`    | `int`  | The number of times Link has died
+| `sword`               | `str`  | The kind of sword Link has
+| `number_of_bombs`     | `int`  | The number of bombs in Link's inventory
+| `arrows_type`         | `str`  | The kind of arrows in Link's inventory
+| `has_bow`             | `bool` | Whether Link has the bow in his inventory
+| `candle_type`         | `str`  | The type of candle in Link's inventory
+| `has_whistle`         |
+| `has_food`            |
+| `potion_type`         |
+| `has_magic_rod`       |
+| `has_raft`            |
+| `has_magic_book`      |
+| `ring_type`           |
+| `has_step_ladder`     |
+| `has_magic_key`       |
+| `has_power_bracelet`  |
+| `has_letter`          |
+| `is_clock_possessed`  |
+| `rupees`              |
+| `keys`                |
+| `heart_containers`    |
+| `hearts`              |
+| `has_boomerang`       |
+| `has_magic_boomerang` |
+| `has_magic_shield`    |
+| `max_number_of_bombs` |
+
 
 ## Citation
 
