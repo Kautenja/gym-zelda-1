@@ -374,7 +374,7 @@ class Zelda1Env(NESEnv):
 
     def _get_info(self):
         """Return the info after a step occurs"""
-        info = dict(
+        return dict(
             x_pos=self._x_pixel,
             y_pos=self._y_pixel,
             direction=self._direction,
@@ -409,8 +409,6 @@ class Zelda1Env(NESEnv):
             has_magic_shield=self._is_magic_shield_in_inventory,
             max_number_of_bombs=self._max_number_of_bombs,
         )
-        print(info)
-        return info
 
 
 # explicitly define the outward facing API of this module
