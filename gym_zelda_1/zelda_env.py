@@ -78,6 +78,38 @@ SWORD_TYPES = collections.defaultdict(lambda: None, {
 })
 
 
+# the type of arrows in Link's inventory
+ARROW_TYPES = collections.defaultdict(lambda: None, {
+    0x00: "None",
+    0x01: "Arrow",
+    0x02: "Silver Arrow",
+})
+
+
+# the type of candle in Link's inventory
+CANDLE_TYPES = collections.defaultdict(lambda: None, {
+    0x00: "None",
+    0x01: "Blue Candle",
+    0x02: "Red Candle",
+})
+
+
+# the type of potion in Link's inventory
+POTION_TYPES = collections.defaultdict(lambda: None, {
+    0x00: "None",
+    0x01: "Life Potion",
+    0x02: "2nd Potion",
+})
+
+
+# the type of ring in Link's inventory
+RING_TYPES = collections.defaultdict(lambda: None, {
+    0x00: "None",
+    0x01: "Blue Ring",
+    0x02: "Red Ring",
+})
+
+
 class Zelda1Env(NESEnv):
     """An environment for playing The Legend of Zelda with OpenAI Gym."""
 
@@ -148,6 +180,115 @@ class Zelda1Env(NESEnv):
     def _sword(self):
         """Return the sword Link has."""
         return SWORD_TYPES[self.ram[0x0657]]
+
+    @property
+    def _number_of_bombs(self):
+        """Return the number of bombs in inventory."""
+        return self.ram[0x0658]
+
+    @property
+    def _arrow_status(self):
+        """Return the type of arrows Link has."""
+        return ARROW_TYPES[self.ram[0x0659]]
+
+    @property
+    def _is_bow_in_inventory(self):
+        """Return True if the bow is in Link's inventory."""
+        return bool(self.ram[0x065A])
+
+    @property
+    def _candle_status(self):
+        """Return the status of the candle Link has."""
+        return CANDLE_TYPES[self.ram[0x065B]]
+
+    @property
+    def _is_whistle_in_inventory(self):
+        """Return True if the candle is in Link's inventory."""
+        return bool(self.ram[0x065C])
+
+    @property
+    def _is_food_in_inventory(self):
+        """Return True if food is in Link's inventory."""
+        return bool(self.ram[0x065D])
+
+    def _potion_in_inventory(self):
+        """Return True if potion is in Link's inventory."""
+        return POTION_TYPES[self.ram[0x065E]]
+
+    def _is_magic_rod_in_inventory(self):
+        """Return True if the magic rod is in Link's inventory."""
+        return bool(self.ram[0x065F])
+
+    def _is_raft_in_inventory(self):
+        """Return True if the raft is in Link's inventory."""
+        return bool(self.ram[0x0660])
+
+    def _is_magic_book_in_inventory(self):
+        """Return True if the magic book is in Link's inventory."""
+        return bool(self.ram[0x0661])
+
+    def _ring_in_inventory(self):
+        """Return True if the ring is in Link's inventory."""
+        return RING_TYPES[self.ram[0x0662]]
+
+    def _is_step_ladder_in_inventory(self):
+        """Return True if the ladder is in Link's inventory."""
+        return bool(self.ram[0x0663])
+
+    def _is_magical_key_in_inventory(self):
+        """Return True if the magic key is in Link's inventory."""
+        return bool(self.ram[0x0664])
+
+    def _is_power_bracelet_in_inventory(self):
+        """Return True if the power bracelet is in Link's inventory."""
+        return bool(self.ram[0x0665])
+
+    def _is_letter_in_inventory(self):
+        """Return True if the letter is in Link's inventory."""
+        return bool(self.ram[0x0666])
+
+# TODO: compass and map in inventory
+# 0667    Compass in Inventory        One bit per level
+# 0668    Map in Inventory            One bit per level
+# 0669    Compass in Inventory        (Level 9)
+# 066A    Map in Inventory            (Level 9)
+
+    def _is_clock_possessed(self):
+        """Return True if the clock is possessed."""
+        return bool(self.ram[0x066C])
+
+    def _number_of_rupees(self):
+        """Return the number of rupees Link has."""
+        return bool(self.ram[0x066D])
+
+    def _number_of_keys(self):
+        """Return the number of keys Link has."""
+        return bool(self.ram[0x066E])
+
+# TODO: heart containers
+# 066F    Heart Containers
+#         -   Low Nibble = how many hearts are filled.
+#         -   High Nybble = Number of heart containers - 1
+#         -   Ex: $10 = 2 Heart Containers with none filled
+# TODO:
+# 0670 Partial heart. $00 = empty, $01 to $7F = half full, $80 to $FF = full.
+# 0671 Triforce pieces. One bit per piece
+
+    def _is_boomerang_in_inventory(self):
+        """Return True if the boomerang is in Link's inventory."""
+        return bool(self.ram[0x0674])
+
+    def _is_magic_boomerang_in_inventory(self):
+        """Return True if the magic boomerang is in Link's inventory."""
+        return bool(self.ram[0x0675])
+
+    def _is_magic_shield_in_inventory(self):
+        """Return True if the magic shield is in Link's inventory."""
+        return bool(self.ram[0x0676])
+
+    def _max_number_of_bombs(self):
+        """Return the max number of bombs that Link can carry."""
+        return bool(self.ram[0x067C])
 
 
     # MARK: RAM Hacks
