@@ -237,11 +237,17 @@ class Zelda1Env(NESEnv):
         """Return True if the letter is in Link's inventory."""
         return bool(self.ram[0x0666])
 
-# TODO: compass and map in inventory
-# 0667    Compass in Inventory        One bit per level
-# 0668    Map in Inventory            One bit per level
-# 0669    Compass in Inventory        (Level 9)
-# 066A    Map in Inventory            (Level 9)
+    @property
+    def _compass(self):
+        """."""
+        # 0667    Compass in Inventory        One bit per level
+        # 0669    Compass in Inventory        (Level 9)
+
+    @property
+    def _map(self):
+        """."""
+        # 0668    Map in Inventory            One bit per level
+        # 066A    Map in Inventory            (Level 9)
 
     @property
     def _is_clock_possessed(self):
@@ -258,13 +264,26 @@ class Zelda1Env(NESEnv):
         """Return the number of keys Link has."""
         return self.ram[0x066E]
 
-# TODO: heart containers
-# 066F    Heart Containers
-#         -   Low Nibble = how many hearts are filled.
-#         -   High Nybble = Number of heart containers - 1
-#         -   Ex: $10 = 2 Heart Containers with none filled
+    @property
+    def _number_of_heart_containers(self):
+        """Return the number of total heart containers."""
+        return (self.ram[0x066F] >> 4) + 1
+
+    @property
+    def _full_hearts_remaining(self):
+        """Return the number of remaining hearts."""
+        return 0x0F & self.ram[0x066F]
+
+    @property
+    def _partial_heart_remaining(self):
+        """Return the amount of the partial heart remaining (percentage)."""
+        return self.ram[0x0670] / 255
+
+    @property
+    def _hearts_remaining(self):
+        return self._full_hearts_remaining + self._partial_heart_remaining
+
 # TODO:
-# 0670 Partial heart. $00 = empty, $01 to $7F = half full, $80 to $FF = full.
 # 0671 Triforce pieces. One bit per piece
 
     @property
@@ -380,6 +399,8 @@ class Zelda1Env(NESEnv):
             is_clock_possessed=self._is_clock_possessed,
             rupees=self._number_of_rupees,
             keys=self._number_of_keys,
+            heart_containers=self._number_of_heart_containers,
+            hearts=self._hearts_remaining,
             has_boomerang=self._is_boomerang_in_inventory,
             has_magic_boomerang=self._is_magic_boomerang_in_inventory,
             has_magic_shield=self._is_magic_shield_in_inventory,
