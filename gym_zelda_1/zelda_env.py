@@ -24,14 +24,14 @@ DIRECTIONS = collections.defaultdict(lambda: None, {
 
 
 # a mapping of numeric values to string types for pulse 1
-# $80=?,
-# $40=1 Heart Warning,
-# $20=Set Bomb,
-# $10=Small Heart Pickup,
-# $08=Key Pickup,
-# $04=Magic Cast,
-# $02=Boomerang Stun,
-# $01=Arrow Deflected
+# 0x80=?,
+# 0x40=1 Heart Warning,
+# 0x20=Set Bomb,
+# 0x10=Small Heart Pickup,
+# 0x08=Key Pickup,
+# 0x04=Magic Cast,
+# 0x02=Boomerang Stun,
+# 0x01=Arrow Deflected,
 PULSE_1_IM_TYPES = collections.defaultdict(lambda: None, {
     0x80: None, # this value is unknown
     0x40: "1 Heart Warning",
@@ -41,6 +41,27 @@ PULSE_1_IM_TYPES = collections.defaultdict(lambda: None, {
     0x04: "Magic Cast",
     0x02: "Boomerang Stun",
     0x01: "Arrow Deflected",
+})
+
+
+# a mapping of numeric values to string types for pulse 2
+# 0x80=Death Spiral,
+# 0x40=Continue Screen,
+# 0x20=Enemy Burst,
+# 0x10=Whistle,
+# 0x08=Bomb Pickup,
+# 0x04=Secret Revealed,
+# 0x02=Key Appears,
+# 0x01=Rupee Pickup,
+PULSE_2_IM_TYPES = collections.defaultdict(lambda: None, {
+    0x80: "Death Spiral",
+    0x40: "Continue Screen",
+    0x20: "Enemy Burst",
+    0x10: "Whistle",
+    0x08: "Bomb Pickup",
+    0x04: "Secret Revealed",
+    0x02: "Key Appears",
+    0x01: "Rupee Pickup",
 })
 
 
@@ -88,12 +109,14 @@ class Zelda1Env(NESEnv):
     @property
     def _pulse_1_IM_type(self):
         """Return the IM type of pulse 1."""
+        # TODO: gives "Small Heart" when text is blitting?
         return PULSE_1_IM_TYPES[self.ram[0x605]]
 
     @property
     def _pulse_2_IM_type(self):
         """Return the IM type of pulse 1."""
-        return None
+        # TODO: gives "Bomb" when initial sword is picked up?
+        return PULSE_2_IM_TYPES[self.ram[0x607]]
 
 
     # MARK: RAM Hacks
