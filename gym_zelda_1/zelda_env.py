@@ -14,7 +14,6 @@ ROM_PATH = os.path.join(MODULE_DIR, '_roms', 'Zelda_1.nes')
 
 
 # a mapping of numeric values to cardinal directions
-# $08=North, $04=South, $01=East, $02=West
 DIRECTIONS = collections.defaultdict(lambda: None, {
     0x08: 'N',
     0x04: 'S',
@@ -24,14 +23,6 @@ DIRECTIONS = collections.defaultdict(lambda: None, {
 
 
 # a mapping of numeric values to string types for pulse 1
-# 0x80=?,
-# 0x40=1 Heart Warning,
-# 0x20=Set Bomb,
-# 0x10=Small Heart Pickup,
-# 0x08=Key Pickup,
-# 0x04=Magic Cast,
-# 0x02=Boomerang Stun,
-# 0x01=Arrow Deflected,
 PULSE_1_IM_TYPES = collections.defaultdict(lambda: None, {
     0x80: None, # this value is unknown
     0x40: "1 Heart Warning",
@@ -45,14 +36,6 @@ PULSE_1_IM_TYPES = collections.defaultdict(lambda: None, {
 
 
 # a mapping of numeric values to string types for pulse 2
-# 0x80=Death Spiral,
-# 0x40=Continue Screen,
-# 0x20=Enemy Burst,
-# 0x10=Whistle,
-# 0x08=Bomb Pickup,
-# 0x04=Secret Revealed,
-# 0x02=Key Appears,
-# 0x01=Rupee Pickup,
 PULSE_2_IM_TYPES = collections.defaultdict(lambda: None, {
     0x80: "Death Spiral",
     0x40: "Continue Screen",
@@ -66,10 +49,6 @@ PULSE_2_IM_TYPES = collections.defaultdict(lambda: None, {
 
 
 # a mapping of numeric values to sword types
-# 0x00=None,
-# 0x01=Sword,
-# 0x02=White Sword,
-# 0x03=Magical Sword,
 SWORD_TYPES = collections.defaultdict(lambda: None, {
     0x00: "None",
     0x01: "Sword",
@@ -79,7 +58,7 @@ SWORD_TYPES = collections.defaultdict(lambda: None, {
 
 
 # the type of arrows in Link's inventory
-ARROW_TYPES = collections.defaultdict(lambda: None, {
+ARROWS_TYPES = collections.defaultdict(lambda: None, {
     0x00: "None",
     0x01: "Arrow",
     0x02: "Silver Arrow",
@@ -124,7 +103,9 @@ class Zelda1Env(NESEnv):
         self._skip_start_screen()
         self._backup()
 
+
     # MARK: Memory access
+
 
     @property
     def _x_pixel(self):
@@ -187,9 +168,9 @@ class Zelda1Env(NESEnv):
         return self.ram[0x0658]
 
     @property
-    def _arrow_status(self):
+    def _arrows_type(self):
         """Return the type of arrows Link has."""
-        return ARROW_TYPES[self.ram[0x0659]]
+        return ARROWS_TYPES[self.ram[0x0659]]
 
     @property
     def _is_bow_in_inventory(self):
@@ -197,7 +178,7 @@ class Zelda1Env(NESEnv):
         return bool(self.ram[0x065A])
 
     @property
-    def _candle_status(self):
+    def _candle_type(self):
         """Return the status of the candle Link has."""
         return CANDLE_TYPES[self.ram[0x065B]]
 
@@ -211,38 +192,47 @@ class Zelda1Env(NESEnv):
         """Return True if food is in Link's inventory."""
         return bool(self.ram[0x065D])
 
-    def _potion_in_inventory(self):
+    @property
+    def _potion_type(self):
         """Return True if potion is in Link's inventory."""
         return POTION_TYPES[self.ram[0x065E]]
 
+    @property
     def _is_magic_rod_in_inventory(self):
         """Return True if the magic rod is in Link's inventory."""
         return bool(self.ram[0x065F])
 
+    @property
     def _is_raft_in_inventory(self):
         """Return True if the raft is in Link's inventory."""
         return bool(self.ram[0x0660])
 
+    @property
     def _is_magic_book_in_inventory(self):
         """Return True if the magic book is in Link's inventory."""
         return bool(self.ram[0x0661])
 
-    def _ring_in_inventory(self):
+    @property
+    def _ring_type(self):
         """Return True if the ring is in Link's inventory."""
         return RING_TYPES[self.ram[0x0662]]
 
+    @property
     def _is_step_ladder_in_inventory(self):
         """Return True if the ladder is in Link's inventory."""
         return bool(self.ram[0x0663])
 
+    @property
     def _is_magical_key_in_inventory(self):
         """Return True if the magic key is in Link's inventory."""
         return bool(self.ram[0x0664])
 
+    @property
     def _is_power_bracelet_in_inventory(self):
         """Return True if the power bracelet is in Link's inventory."""
         return bool(self.ram[0x0665])
 
+    @property
     def _is_letter_in_inventory(self):
         """Return True if the letter is in Link's inventory."""
         return bool(self.ram[0x0666])
@@ -253,17 +243,20 @@ class Zelda1Env(NESEnv):
 # 0669    Compass in Inventory        (Level 9)
 # 066A    Map in Inventory            (Level 9)
 
+    @property
     def _is_clock_possessed(self):
         """Return True if the clock is possessed."""
         return bool(self.ram[0x066C])
 
+    @property
     def _number_of_rupees(self):
         """Return the number of rupees Link has."""
-        return bool(self.ram[0x066D])
+        return self.ram[0x066D]
 
+    @property
     def _number_of_keys(self):
         """Return the number of keys Link has."""
-        return bool(self.ram[0x066E])
+        return self.ram[0x066E]
 
 # TODO: heart containers
 # 066F    Heart Containers
@@ -274,24 +267,29 @@ class Zelda1Env(NESEnv):
 # 0670 Partial heart. $00 = empty, $01 to $7F = half full, $80 to $FF = full.
 # 0671 Triforce pieces. One bit per piece
 
+    @property
     def _is_boomerang_in_inventory(self):
         """Return True if the boomerang is in Link's inventory."""
         return bool(self.ram[0x0674])
 
+    @property
     def _is_magic_boomerang_in_inventory(self):
         """Return True if the magic boomerang is in Link's inventory."""
         return bool(self.ram[0x0675])
 
+    @property
     def _is_magic_shield_in_inventory(self):
         """Return True if the magic shield is in Link's inventory."""
         return bool(self.ram[0x0676])
 
+    @property
     def _max_number_of_bombs(self):
         """Return the max number of bombs that Link can carry."""
-        return bool(self.ram[0x067C])
+        return self.ram[0x067C]
 
 
     # MARK: RAM Hacks
+
 
     def _skip_start_screen(self):
         """Press and release start to skip the start screen."""
@@ -315,9 +313,12 @@ class Zelda1Env(NESEnv):
             self._frame_advance(8)
             self._frame_advance(0)
 
+
     # MARK: Reward Function
 
+
     # MARK: nes-py API calls
+
 
     def _will_reset(self):
         """Handle and RAM hacking before a reset occurs."""
@@ -361,6 +362,28 @@ class Zelda1Env(NESEnv):
             killed_enemies=self._killed_enemy_count,
             number_of_deaths=self._number_of_deaths,
             sword=self._sword,
+            number_of_bombs=self._number_of_bombs,
+            arrows_type=self._arrows_type,
+            has_bow=self._is_bow_in_inventory,
+            candle_type=self._candle_type,
+            has_whistle=self._is_whistle_in_inventory,
+            has_food=self._is_food_in_inventory,
+            potion_type=self._potion_type,
+            has_magic_rod=self._is_magic_rod_in_inventory,
+            has_raft=self._is_raft_in_inventory,
+            has_magic_book=self._is_magic_book_in_inventory,
+            ring_type=self._ring_type,
+            has_step_ladder=self._is_step_ladder_in_inventory,
+            has_magic_key=self._is_magical_key_in_inventory,
+            has_power_bracelet=self._is_power_bracelet_in_inventory,
+            has_letter=self._is_letter_in_inventory,
+            is_clock_possessed=self._is_clock_possessed,
+            rupees=self._number_of_rupees,
+            keys=self._number_of_keys,
+            has_boomerang=self._is_boomerang_in_inventory,
+            has_magic_boomerang=self._is_magic_boomerang_in_inventory,
+            has_magic_shield=self._is_magic_shield_in_inventory,
+            max_number_of_bombs=self._max_number_of_bombs,
         )
         print(info)
         return info
