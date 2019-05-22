@@ -105,16 +105,19 @@ class Zelda1Env(NESEnv):
 
     def _get_reward(self):
         """Return the reward after a step occurs."""
+        return 0
         # return self._x_reward + self._time_penalty + self._death_penalty
 
     def _get_done(self):
         """Return True if the episode is over, False otherwise."""
+        return False
         # if self.is_single_stage_env:
         #     return self._is_dying or self._is_dead or self._flag_get
         # return self._is_game_over
 
     def _get_info(self):
         """Return the info after a step occurs"""
+        return dict()
         # return dict(
         #     coins=self._coins,
         #     flag_get=self._flag_get,
