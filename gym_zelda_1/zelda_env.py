@@ -123,26 +123,25 @@ class Zelda1Env(NESEnv):
 
     def _skip_start_screen(self):
         """Press and release start to skip the start screen."""
-        # press and release the start button
-        # self._frame_advance(8)
-        # self._frame_advance(0)
-        # # Press start until the game starts
-        # while self._time == 0:
-        #     # press and release the start button
-        #     self._frame_advance(8)
-        #     # if we're in the single stage, environment, write the stage data
-        #     if self.is_single_stage_env:
-        #         self._write_stage()
-        #     self._frame_advance(0)
-        #     # run-out the prelevel timer to skip the animation
-        #     self._runout_prelevel_timer()
-        # # set the last time to now
-        # self._time_last = self._time
-        # # after the start screen idle to skip some extra frames
-        # while self._time >= self._time_last:
-        #     self._time_last = self._time
-        #     self._frame_advance(8)
-        #     self._frame_advance(0)
+        # press and release the start button 21 times
+        # - kill 21 frames to get to registration
+        # - kill 10 frames to get to player 1 registration
+        for _ in range(31):
+            self._frame_advance(8)
+            self._frame_advance(0)
+        # select the letter A and kill 6 frames
+        for _ in range(6):
+            self._frame_advance(1)
+            self._frame_advance(0)
+        # move the cursor to the register button
+        for _ in range(3):
+            self._frame_advance(4)
+            self._frame_advance(0)
+        # press select to register the profile and subsequently start the game
+        # by killing some frames and pressing select again
+        for _ in range(9):
+            self._frame_advance(8)
+            self._frame_advance(0)
 
     # MARK: Reward Function
 
