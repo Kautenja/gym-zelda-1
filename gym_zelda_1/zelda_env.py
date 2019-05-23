@@ -110,6 +110,21 @@ class Zelda1Env(NESEnv):
     # MARK: Memory access
 
     @property
+    def _is_screen_scrolling(self):
+        """Return True if the screen is scrolling, False otherwise."""
+        return self.ram[0x12] in SCROLL_GAME_MODES
+
+    @property
+    def _current_level(self):
+        """Return the current level Link is in."""
+        return self.ram[0x10]
+
+    @property
+    def _current_save_slot(self):
+        """Return the current save slot being played on."""
+        return self.ram[0x16]
+
+    @property
     def _x_pixel(self):
         """Return the current x pixel of Link's location."""
         return self.ram[0x70]
@@ -123,11 +138,6 @@ class Zelda1Env(NESEnv):
     def _direction(self):
         """Return the current direction that Link is facing."""
         return DIRECTIONS[self.ram[0x98]]
-
-    @property
-    def _is_screen_scrolling(self):
-        """Return True if the screen is scrolling, False otherwise."""
-        return self.ram[0x12] in SCROLL_GAME_MODES
 
     @property
     def _has_candled(self):
@@ -383,6 +393,7 @@ class Zelda1Env(NESEnv):
     def _get_info(self):
         """Return the info after a step occurs"""
         return dict(
+            current_level=self._current_level,
             x_pos=self._x_pixel,
             y_pos=self._y_pixel,
             direction=self._direction,

@@ -17,8 +17,8 @@
 [python-version]: https://img.shields.io/pypi/pyversions/gym-zelda-1.svg
 [python-home]: https://python.org
 
-<img 
-  src="https://user-images.githubusercontent.com/2184469/58208692-dae16580-7caa-11e9-82cf-2e870c681201.gif" 
+<img
+  src="https://user-images.githubusercontent.com/2184469/58208692-dae16580-7caa-11e9-82cf-2e870c681201.gif"
   width="200px" />
 
 An [OpenAI Gym](https://github.com/openai/gym) environment for The Legend of
@@ -93,6 +93,7 @@ keys:
 
 | Key                   | Type    | Description
 |:----------------------|:--------|:------------------------------------------------------|
+| `current_level`       | `int`   | The current level Link is in (0 for overworld)
 | `x_pos`               | `int`   | Link's _x_ position in the screen (from the left)
 | `y_pos`               | `int`   | Link's _y_ position in the screen (from the top)
 | `direction`           | `str`   | Link's direction as one of _{"N", "S", "E", "W"}_
