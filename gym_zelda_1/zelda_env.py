@@ -22,6 +22,10 @@ DIRECTIONS = collections.defaultdict(lambda: None, {
 })
 
 
+# the set of game modes that indicate a scroll is in progress
+SCROLL_GAME_MODES = {4, 6, 7}
+
+
 # a mapping of numeric values to string types for pulse 1
 PULSE_1_IM_TYPES = collections.defaultdict(lambda: None, {
     0x80: None, # this value is unknown
@@ -103,9 +107,7 @@ class Zelda1Env(NESEnv):
         self._skip_start_screen()
         self._backup()
 
-
     # MARK: Memory access
-
 
     @property
     def _x_pixel(self):
@@ -123,9 +125,9 @@ class Zelda1Env(NESEnv):
         return DIRECTIONS[self.ram[0x98]]
 
     @property
-    def _is_paused(self):
-        """Return True if the game is paused, False otherwise."""
-        return bool(self.ram[0xE0])
+    def _is_screen_scrolling(self):
+        """Return True if the screen is scrolling, False otherwise."""
+        return self.ram[0x12] in SCROLL_GAME_MODES
 
     @property
     def _has_candled(self):
@@ -309,9 +311,7 @@ class Zelda1Env(NESEnv):
         """Return the max number of bombs that Link can carry."""
         return self.ram[0x067C]
 
-
     # MARK: RAM Hacks
-
 
     def _skip_start_screen(self):
         """Press and release start to skip the start screen."""
@@ -331,16 +331,23 @@ class Zelda1Env(NESEnv):
             self._frame_advance(0)
         # press select to register the profile and subsequently start the game
         # by killing some frames and pressing select again
-        for _ in range(9):
+        self._wait_for_hearts()
+
+    def _wait_for_hearts(self):
+        """Skip the death animation when Link dies."""
+        while self._hearts_remaining <= 0:
             self._frame_advance(8)
             self._frame_advance(0)
 
+    def _wait_for_scroll(self):
+        """Wait for the screen to stop scrolling."""
+        while self._is_screen_scrolling:
+            self._frame_advance(8)
+            self._frame_advance(0)
 
     # MARK: Reward Function
 
-
     # MARK: nes-py API calls
-
 
     def _will_reset(self):
         """Handle and RAM hacking before a reset occurs."""
@@ -361,15 +368,16 @@ class Zelda1Env(NESEnv):
             None
 
         """
-        pass
+        self._wait_for_hearts()
+        self._wait_for_scroll()
 
     def _get_reward(self):
         """Return the reward after a step occurs."""
         return 0
-        # return self._x_reward + self._time_penalty + self._death_penalty
 
     def _get_done(self):
         """Return True if the episode is over, False otherwise."""
+        # TODO: return True when game is over
         return False
 
     def _get_info(self):
