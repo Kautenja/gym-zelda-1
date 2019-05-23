@@ -1,6 +1,7 @@
 """Registration code of Gym environments in this package."""
 import gym as _gym
 from gym import make
+from nes_py.wrappers import BinarySpaceToDiscreteSpaceEnv
 from .zelda_env import Zelda1Env
 
 
@@ -8,8 +9,6 @@ from .zelda_env import Zelda1Env
 _gym.envs.registration.register(
     id='Zelda1-v0',
     entry_point='gym_zelda_1:Zelda1Env',
-    max_episode_steps=9999999,
-    reward_threshold=9999999,
     nondeterministic=True,
 )
 
