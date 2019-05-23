@@ -341,7 +341,12 @@ class Zelda1Env(NESEnv):
             self._frame_advance(0)
         # press select to register the profile and subsequently start the game
         # by killing some frames and pressing select again
-        self._wait_for_hearts()
+        for _ in range(9):
+            self._frame_advance(8)
+            self._frame_advance(0)
+        # skip the opening screen animation
+        while self._direction is None or bool(self.ram[0x007C]):
+            self._frame_advance(0)
 
     def _wait_for_hearts(self):
         """Skip the death animation when Link dies."""
@@ -389,9 +394,9 @@ class Zelda1Env(NESEnv):
             None
 
         """
-        self._wait_for_hearts()
-        self._wait_for_scroll()
-        self._skip_boring_actions()
+        # self._wait_for_hearts()
+        # self._wait_for_scroll()
+        # self._skip_boring_actions()
 
     def _get_reward(self):
         """Return the reward after a step occurs."""
