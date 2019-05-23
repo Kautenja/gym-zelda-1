@@ -394,9 +394,9 @@ class Zelda1Env(NESEnv):
             None
 
         """
-        # self._wait_for_hearts()
-        # self._wait_for_scroll()
-        # self._skip_boring_actions()
+        self._wait_for_hearts()
+        self._wait_for_scroll()
+        self._skip_boring_actions()
 
     def _get_reward(self):
         """Return the reward after a step occurs."""
