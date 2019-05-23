@@ -9,7 +9,7 @@ with open('README.md') as README_md:
 
 setup(
     name='gym_zelda_1',
-    version='0.1.1',
+    version='0.2.0',
     description='Super Mario Bros. for OpenAI Gym',
     long_description=README,
     long_description_content_type='text/markdown',
