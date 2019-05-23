@@ -40,18 +40,17 @@ pip install gym-zelda-1
 You must import `gym_zelda_1` before trying to make an environment.
 This is because gym environments are registered at runtime. By default,
 `gym_zelda_1` environments use the full NES action space of 256
-discrete actions. To contstrain this, `gym_zelda_1.actions` provides
-three actions lists (`RIGHT_ONLY`, `SIMPLE_MOVEMENT`, and `COMPLEX_MOVEMENT`)
-for the `nes_py.wrappers.BinarySpaceToDiscreteSpaceEnv` wrapper. See
-[gym_zelda_1/actions.py](gym_zelda_1/actions.py) for a
-breakdown of the legal actions in each of these three lists.
+discrete actions. To constrain this, `gym_zelda_1.actions` provides
+an action list called `MOVEMENT` (20 discrete actions) for the
+`nes_py.wrappers.BinarySpaceToDiscreteSpaceEnv` wrapper.
 
 ```python
 from nes_py.wrappers import BinarySpaceToDiscreteSpaceEnv
 import gym_zelda_1
-from gym_zelda_1.actions import SIMPLE_MOVEMENT
+from gym_zelda_1.actions import MOVEMENT
+
 env = gym_zelda_1.make('Zelda1-v0')
-env = BinarySpaceToDiscreteSpaceEnv(env, SIMPLE_MOVEMENT)
+env = BinarySpaceToDiscreteSpaceEnv(env, MOVEMENT)
 
 done = True
 for step in range(5000):
@@ -84,7 +83,7 @@ Info about the rewards and info returned by the `step` method.
 
 ### Reward Function
 
-TODO
+TODO: The reward function is a complicated work in progress.
 
 ### `info` dictionary
 
@@ -141,3 +140,10 @@ Please cite `gym-zelda-1` if you use it in your research.
   howpublished = {\url{https://github.com/Kautenja/gym-zelda-1}},
 }
 ```
+
+## References
+
+The following references contributed to the construction of this project.
+
+1. [The Legend of Zelda: RAM Map](https://datacrystal.romhacking.net/wiki/The_Legend_of_Zelda:RAM_map). _Data Crystal ROM Hacking_.
+2. [The Legend of Zelda: Memory Addresses](http://thealmightyguru.com/Games/Hacking/Wiki/index.php/The_Legend_of_Zelda#Memory_Addresses). _NES Hacker._
