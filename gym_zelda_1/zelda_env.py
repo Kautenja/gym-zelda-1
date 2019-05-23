@@ -376,8 +376,6 @@ class Zelda1Env(NESEnv):
         while 65 < self.ram[0xFC]:
             self._frame_advance(0)
 
-    # MARK: Reward Function
-
     # MARK: nes-py API calls
 
     def _will_reset(self):
@@ -406,6 +404,7 @@ class Zelda1Env(NESEnv):
 
     def _get_reward(self):
         """Return the reward after a step occurs."""
+        # TODO: define a default reward function
         return 0
 
     def _get_done(self):
