@@ -371,6 +371,11 @@ class Zelda1Env(NESEnv):
         while self.ram[0x0606] == 0x08:
             self._frame_advance(0)
 
+    def _skip_inventory_scroll(self):
+        """Skip the scrolling action when showing / hiding inventory."""
+        while 65 < self.ram[0xFC]:
+            self._frame_advance(0)
+
     # MARK: Reward Function
 
     # MARK: nes-py API calls
@@ -397,6 +402,8 @@ class Zelda1Env(NESEnv):
         self._wait_for_hearts()
         self._wait_for_scroll()
         self._skip_boring_actions()
+        self._skip_inventory_scroll()
+        print()
 
     def _get_reward(self):
         """Return the reward after a step occurs."""
