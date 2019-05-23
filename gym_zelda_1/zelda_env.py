@@ -403,7 +403,6 @@ class Zelda1Env(NESEnv):
         self._wait_for_scroll()
         self._skip_boring_actions()
         self._skip_inventory_scroll()
-        print()
 
     def _get_reward(self):
         """Return the reward after a step occurs."""
