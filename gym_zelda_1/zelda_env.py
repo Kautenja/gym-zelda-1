@@ -355,6 +355,17 @@ class Zelda1Env(NESEnv):
             self._frame_advance(8)
             self._frame_advance(0)
 
+    def _skip_boring_actions(self):
+        """Skip actions that the agent will find boring."""
+        # displaying text
+        while self.ram[0x0605] == 0x10:
+            # each character takes 6 frames to draw
+            for _ in range(6):
+                self._frame_advance(0)
+        # entering / exiting cave
+        while self.ram[0x0606] == 0x08:
+            self._frame_advance(0)
+
     # MARK: Reward Function
 
     # MARK: nes-py API calls
@@ -380,6 +391,7 @@ class Zelda1Env(NESEnv):
         """
         self._wait_for_hearts()
         self._wait_for_scroll()
+        self._skip_boring_actions()
 
     def _get_reward(self):
         """Return the reward after a step occurs."""
