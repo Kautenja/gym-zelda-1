@@ -42,7 +42,7 @@ This is because gym environments are registered at runtime. By default,
 `gym_zelda_1` environments use the full NES action space of 256
 discrete actions. To constrain this, `gym_zelda_1.actions` provides
 an action list called `MOVEMENT` (20 discrete actions) for the
-`nes_py.wrappers.BinarySpaceToDiscreteSpaceEnv` wrapper.
+`nes_py.wrappers.JoypadSpace` wrapper.
 
 ```python
 from nes_py.wrappers import JoypadSpace
