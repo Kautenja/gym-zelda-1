@@ -45,12 +45,12 @@ an action list called `MOVEMENT` (20 discrete actions) for the
 `nes_py.wrappers.BinarySpaceToDiscreteSpaceEnv` wrapper.
 
 ```python
-from nes_py.wrappers import BinarySpaceToDiscreteSpaceEnv
+from nes_py.wrappers import JoypadSpace
 import gym_zelda_1
 from gym_zelda_1.actions import MOVEMENT
 
 env = gym_zelda_1.make('Zelda1-v0')
-env = BinarySpaceToDiscreteSpaceEnv(env, MOVEMENT)
+env = JoypadSpace(env, MOVEMENT)
 
 done = True
 for step in range(5000):
