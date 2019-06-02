@@ -1,7 +1,6 @@
 """Registration code of Gym environments in this package."""
 import gym as _gym
 from gym import make
-from nes_py.wrappers import BinarySpaceToDiscreteSpaceEnv
 from .zelda_env import Zelda1Env
 
 
