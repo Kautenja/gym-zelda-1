@@ -1,7 +1,6 @@
-"""Super Mario Bros for OpenAI Gym."""
+"""Zelda 1 for OpenAI Gym."""
 import argparse
 import gym
-from nes_py.wrappers import BinarySpaceToDiscreteSpaceEnv
 from nes_py.app.play_human import play_human
 from nes_py.app.play_random import play_random
 
@@ -9,26 +8,23 @@ from nes_py.app.play_random import play_random
 def _get_args():
     """Parse command line arguments and return them."""
     parser = argparse.ArgumentParser(description=__doc__)
-    # add the argument for the Super Mario Bros environment to run
     parser.add_argument('--env', '-e',
         type=str,
         default='Zelda1-v0',
-        help='The name of the environment to play'
+        choices=['Zelda1-v0'],
+        help='The environment to play'
     )
-    # add the argument for the mode of execution as either human or random
     parser.add_argument('--mode', '-m',
         type=str,
         default='human',
         choices=['human', 'random'],
-        help='The execution mode for the emulation'
+        help='The execution mode for the environment.'
     )
-    # add the argument for the number of steps to take in random mode
     parser.add_argument('--steps', '-s',
         type=int,
         default=500,
         help='The number of random steps to take.',
     )
-    # parse arguments and return them
     return parser.parse_args()
 
 
