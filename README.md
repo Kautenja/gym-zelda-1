@@ -134,10 +134,10 @@ Please cite `gym-zelda-1` if you use it in your research.
 ```tex
 @misc{gym-zelda-1,
   author = {Christian Kauten},
+  howpublished = {GitHub},
   title = {{The Legend of Zelda} for {OpenAI Gym}},
+  URL = {https://github.com/Kautenja/gym-zelda-1},
   year = {2019},
-  publisher = {GitHub},
-  howpublished = {\url{https://github.com/Kautenja/gym-zelda-1}},
 }
 ```
 
