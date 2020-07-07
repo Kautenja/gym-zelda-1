@@ -7,8 +7,8 @@
 [![Format][pypi-format]][pypi-home]
 [![License][pypi-license]](LICENSE)
 
-[build-status]: https://travis-ci.com/Kautenja/gym-zelda-1.svg?branch=master
-[ci-server]: https://travis-ci.com/Kautenja/gym-zelda-1
+[build-status]: https://travis-ci.org/Kautenja/gym-zelda-1.svg?branch=master
+[ci-server]: https://travis-ci.org/Kautenja/gym-zelda-1
 [pypi-version]: https://badge.fury.io/py/gym-zelda-1.svg
 [pypi-license]: https://img.shields.io/pypi/l/gym-zelda-1.svg
 [pypi-status]: https://img.shields.io/pypi/status/gym-zelda-1.svg
