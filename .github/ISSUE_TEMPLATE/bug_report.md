@@ -20,7 +20,7 @@ import platform
 print(platform.platform())
 print(sys.version_info)
 print(pkg_resources.get_distribution("nes-py").version)
-print(pkg_resources.get_distribution("gym-super-mario-bros").version)
+print(pkg_resources.get_distribution("gym-zelda-1").version)
 <YOUR SCRIPT>
 ```
 

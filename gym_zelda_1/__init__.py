@@ -9,6 +9,7 @@ _gym.envs.registration.register(
     id='Zelda1-v0',
     entry_point='gym_zelda_1:Zelda1Env',
     nondeterministic=True,
+    disable_env_checker=True,
 )
 
 

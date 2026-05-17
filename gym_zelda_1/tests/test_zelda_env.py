@@ -1,4 +1,4 @@
-"""Test cases for the Super Mario Bros meta environment."""
+"""Test cases for the Zelda 1 environment."""
 from unittest import TestCase
 from ..zelda_env import Zelda1Env
 

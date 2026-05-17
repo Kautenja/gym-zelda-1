@@ -5,22 +5,6 @@ from .. import make
 
 class ShouldMakeEnv:
     """A test case for making an arbitrary environment."""
-    # the number of coins at the start
-    coins = 0
-    # whether flag get is thrown
-    flag_get = False
-    # the number of lives left
-    life = 2
-    # the current world
-    world = 1
-    # the current score
-    score = 0
-    # the current stage
-    stage = 1
-    # the amount of time left
-    time = 400
-    # the x position of Mario
-    x_pos = 40
     # the environments ID
     env_id = None
     # the random seed to apply
@@ -31,15 +15,8 @@ class ShouldMakeEnv:
         if self.seed is not None:
             env.seed(self.seed)
         env.reset()
-        s, r, d, i = env.step(0)
-        # self.assertEqual(self.coins, i['coins'])
-        # self.assertEqual(self.flag_get, i['flag_get'])
-        # self.assertEqual(self.life, i['life'])
-        # self.assertEqual(self.world, i['world'])
-        # self.assertEqual(self.score, i['score'])
-        # self.assertEqual(self.stage, i['stage'])
-        # self.assertEqual(self.time, i['time'])
-        # self.assertEqual(self.x_pos, i['x_pos'])
+        _state, _reward, _done, info = env.step(0)
+        self.assertIn('current_level', info)
         env.close()
 
     def test(self):
@@ -50,6 +27,6 @@ class ShouldMakeEnv:
                 self._test_env(env_id)
 
 
-class ShouldMakeSuperMarioBros(ShouldMakeEnv, TestCase):
-    # the environments ID for all versions of Super Mario Bros
+class ShouldMakeZelda1(ShouldMakeEnv, TestCase):
+    # the environment ID for The Legend of Zelda
     env_id = 'Zelda1-v0'
