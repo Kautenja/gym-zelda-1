@@ -21,7 +21,7 @@
   src="https://user-images.githubusercontent.com/2184469/58208692-dae16580-7caa-11e9-82cf-2e870c681201.gif"
   width="200px" />
 
-An [OpenAI Gym](https://github.com/openai/gym) environment for The Legend of
+A [Gymnasium](https://gymnasium.farama.org/) environment for The Legend of
 Zelda (i.e., Zelda 1) on The Nintendo Entertainment System (NES) based on
 the [nes-py](https://github.com/Kautenja/nes-py) emulator.
 
@@ -38,31 +38,35 @@ pip install gym-zelda-1
 ### Python
 
 You must import `gym_zelda_1` before trying to make an environment.
-This is because gym environments are registered at runtime. By default,
+This is because Gymnasium environments are registered at runtime. By default,
 `gym_zelda_1` environments use the full NES action space of 256
 discrete actions. To constrain this, `gym_zelda_1.actions` provides
 an action list called `MOVEMENT` (20 discrete actions) for the
 `nes_py.wrappers.JoypadSpace` wrapper.
 
 ```python
+import gymnasium as gym
 from nes_py.wrappers import JoypadSpace
 import gym_zelda_1
 from gym_zelda_1.actions import MOVEMENT
 
-env = gym_zelda_1.make('Zelda1-v0')
+env = gym.make('Zelda1-v0', render_mode='human')
 env = JoypadSpace(env, MOVEMENT)
 
-done = True
+observation, info = env.reset(seed=123)
 for step in range(5000):
-    if done:
-        state = env.reset()
-    state, reward, done, info = env.step(env.action_space.sample())
+    action = env.action_space.sample()
+    observation, reward, terminated, truncated, info = env.step(action)
+    done = terminated or truncated
     env.render()
+
+    if done:
+        observation, info = env.reset()
 
 env.close()
 ```
 
-**NOTE:** `gym_zelda_1.make` is just an alias to `gym.make` for
+**NOTE:** `gym_zelda_1.make` is just an alias to `gymnasium.make` for
 convenience.
 
 **NOTE:** remove calls to `render` in training code for a nontrivial
@@ -84,6 +88,10 @@ Info about the rewards and info returned by the `step` method.
 ### Reward Function
 
 TODO: The reward function is a complicated work in progress.
+
+The current environment also does not implement Zelda-specific game-ending
+termination logic. Its internal `terminated` value remains `False`; Gymnasium
+wrappers may still set `truncated` for external limits.
 
 ### `info` dictionary
 
@@ -143,7 +151,7 @@ Please cite `gym-zelda-1` if you use it in your research.
 @misc{gym-zelda-1,
   author = {Christian Kauten},
   howpublished = {GitHub},
-  title = {{The Legend of Zelda} for {OpenAI Gym}},
+  title = {{The Legend of Zelda} for {Gymnasium}},
   URL = {https://github.com/Kautenja/gym-zelda-1},
   year = {2019},
 }

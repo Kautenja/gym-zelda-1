@@ -1,4 +1,4 @@
-"""An OpenAI Gym environment for The Legend of Zelda."""
+"""A Gymnasium environment for The Legend of Zelda."""
 import collections
 import os
 from nes_py import NESEnv
@@ -94,14 +94,14 @@ RING_TYPES = collections.defaultdict(lambda: None, {
 
 
 class Zelda1Env(NESEnv):
-    """An environment for playing The Legend of Zelda with OpenAI Gym."""
+    """An environment for playing The Legend of Zelda with Gymnasium."""
 
     # the legal range of rewards for each step
     reward_range = (-float('inf'), float('inf'))
 
-    def __init__(self):
+    def __init__(self, render_mode=None):
         """Initialize a new Zelda 1 environment."""
-        super().__init__(ROM_PATH)
+        super().__init__(ROM_PATH, render_mode=render_mode)
         # reset the emulator, skip the start screen, and create a backup state
         self.reset()
         self._skip_start_screen()
@@ -407,9 +407,9 @@ class Zelda1Env(NESEnv):
         # TODO: define a default reward function
         return 0
 
-    def _get_done(self):
+    def _get_terminated(self):
         """Return True if the episode is over, False otherwise."""
-        # TODO: return True when game is over
+        # TODO: return True when game-ending logic is implemented.
         return False
 
     def _get_info(self):
