@@ -24,7 +24,6 @@
 #     cli                 Run the package CLI; pass extra args after the command
 #     play                Alias for cli
 #     random              Run the package CLI in random mode
-#     run                 Run the legacy run.py smoke script
 #     *                   Execute the command directly from the project root
 #
 # Examples:
@@ -33,7 +32,6 @@
 #     ./main.sh deployment
 #     ./main.sh cli --env Zelda1-v0
 #     ./main.sh random --env Zelda1-v0 --steps 100
-#     ./main.sh run
 #
 
 set -euo pipefail
@@ -186,11 +184,6 @@ case "${COMMAND}" in
 
 "random")
   "${PYTHON}" -m gym_zelda_1._app.cli --mode random "$@"
-  exit 0
-  ;;
-
-"run")
-  "${PYTHON}" run.py "$@"
   exit 0
   ;;
 
