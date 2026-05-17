@@ -1,3 +1,55 @@
 [build-system]
 requires = ["setuptools>=77.0.3", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "gym_zelda_1"
+version = "0.2.2"
+description = "The Legend of Zelda for OpenAI Gym"
+readme = { file = "README.md", content-type = "text/markdown" }
+requires-python = ">=3.13"
+license = { text = "Proprietary" }
+authors = [
+    { name = "Christian Kauten", email = "kautencreations@gmail.com" },
+]
+keywords = [
+    "OpenAI-Gym",
+    "NES",
+    "The-Legend-Of-Zelda",
+    "Zelda-1",
+    "Reinforcement-Learning-Environment",
+]
+classifiers = [
+    "License :: Free For Educational Use",
+    "Development Status :: 1 - Planning",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Operating System :: MacOS :: MacOS X",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Games/Entertainment",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "gym>=0.25.2,<0.26",
+    "nes-py>=8.2.1",
+]
+
+[project.urls]
+Homepage = "https://github.com/Kautenja/gym-zelda-1"
+
+[project.scripts]
+gym_zelda_1 = "gym_zelda_1._app.cli:main"
+
+[tool.setuptools]
+include-package-data = false
+
+[tool.setuptools.packages.find]
+where = ["."]
+exclude = ["tests", "*.tests", "*.tests.*"]
+namespaces = false
+
+[tool.setuptools.package-data]
+gym_zelda_1 = ["_roms/*.nes"]

@@ -127,6 +127,14 @@ keys:
 | `has_magic_shield`    | `bool`  | Whether Link has the magic shield in his inventory
 | `max_number_of_bombs` | `int`   | The maximum number of bombs Link can carry
 
+## Publishing
+
+PyPI releases are published by the `Publish to PyPI` GitHub Actions workflow
+through PyPI trusted publishing, not by local `twine` credentials. Configure the
+PyPI project publisher with owner `Kautenja`, repository `gym-zelda-1`, workflow
+filename `publish.yml`, and environment `pypi`. Then create a GitHub release
+from a tag matching `pyproject.toml`'s version, with or without a leading `v`.
+
 ## Citation
 
 Please cite `gym-zelda-1` if you use it in your research.
