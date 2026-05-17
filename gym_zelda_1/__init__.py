@@ -1,6 +1,6 @@
-"""Registration code of Gym environments in this package."""
-import gym as _gym
-from gym import make
+"""Registration code of Gymnasium environments in this package."""
+import gymnasium as _gym
+from gymnasium import make
 from .zelda_env import Zelda1Env
 
 

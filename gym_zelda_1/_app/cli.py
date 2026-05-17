@@ -1,8 +1,8 @@
-"""Zelda 1 for OpenAI Gym."""
+"""Zelda 1 for Gymnasium."""
 import argparse
-import gym
-from nes_py.app.play_human import play_human
-from nes_py.app.play_random import play_random
+import gymnasium as gym
+from nes_py.play import play_human
+from nes_py.play import play_random
 
 
 def _get_args():
@@ -33,12 +33,17 @@ def main():
     # parse arguments from the command line (argparse validates arguments)
     args = _get_args()
     # build the environment with the given ID
-    env = gym.make(args.env)
+    render_mode = 'human' if args.mode == 'random' else None
+    env = gym.make(args.env, render_mode=render_mode)
     # play the environment with the given mode
     if args.mode == 'human':
         play_human(env)
     else:
         play_random(env, args.steps)
+
+
+if __name__ == '__main__':
+    main()
 
 
 # explicitly define the outward facing API of this module
