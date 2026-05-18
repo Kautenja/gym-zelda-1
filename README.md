@@ -97,8 +97,10 @@ Info about the rewards and info returned by the `step` method.
 TODO: The reward function is a complicated work in progress.
 
 The current environment also does not implement Zelda-specific game-ending
-termination logic. Its internal `terminated` value remains `False`; Gymnasium
-wrappers may still set `truncated` for external limits.
+termination logic. The registered `Zelda1-v0` spec does not set
+`max_episode_steps`, so Gymnasium does not add a registration-level
+`TimeLimit`; `truncated` remains `False` unless a caller applies an external
+limit wrapper.
 
 ### `info` dictionary
 
