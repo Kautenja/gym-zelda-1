@@ -18,6 +18,9 @@ history, `README.md`, and current package metadata in `pyproject.toml`.
   a repo-local `main.sh` workflow, and trusted PyPI publishing guidance.
 - Clarified wrapper bootstrap usage so callers import `gym_zelda_1` before
   creating environments.
+- Documented `Zelda1-v0` as a navigation and state-inspection sandbox with a
+  deliberate zero-reward policy, no internal terminal condition, and
+  non-terminal death recovery.
 
 ### Notes for 1.0.0
 
