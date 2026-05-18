@@ -5,7 +5,7 @@ All notable changes to `gym-zelda-1` are documented in this file.
 This changelog is reconstructed from local Git tags, release-oriented commit
 history, `README.md`, and current package metadata in `pyproject.toml`.
 
-## [0.3.0] - Unreleased
+## [0.3.0] - 2026-05-18
 
 ### Changed
 
