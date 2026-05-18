@@ -26,6 +26,15 @@ DIRECTIONS = collections.defaultdict(lambda: None, {
 SCROLL_GAME_MODES = {4, 6, 7}
 
 
+# Zelda1-v0 is a navigation and state-inspection sandbox. These labels make
+# the intentionally neutral RL contract explicit in code and documentation.
+REWARD_POLICY = 'navigation_state_inspection_sandbox_zero_reward'
+TERMINATION_POLICY = 'death_recovery_non_terminal_sandbox'
+LOW_HEALTH_THRESHOLD = 1.0
+DEATH_SPIRAL_PULSE_2 = 0x80
+CONTINUE_SCREEN_PULSE_2 = 0x40
+
+
 # a mapping of numeric values to string types for pulse 1
 PULSE_1_IM_TYPES = collections.defaultdict(lambda: None, {
     0x80: None, # this value is unknown
@@ -293,8 +302,28 @@ class Zelda1Env(NESEnv):
 
     @property
     def _hearts_remaining(self):
-        """Return the amount of floating point remaining hears."""
+        """Return the amount of floating point remaining hearts."""
         return self._full_hearts_remaining + self._partial_heart_remaining
+
+    @property
+    def _is_low_health(self):
+        """Return True if Link is alive but at or below one heart."""
+        return bool(0 < self._hearts_remaining <= LOW_HEALTH_THRESHOLD)
+
+    @property
+    def _needs_death_recovery(self):
+        """Return True if Link has no health and needs the continue flow."""
+        return bool(self._hearts_remaining <= 0)
+
+    @property
+    def _is_death_spiral(self):
+        """Return True if the pulse 2 audio cue reports the death spiral."""
+        return bool(self.ram[0x0607] == DEATH_SPIRAL_PULSE_2)
+
+    @property
+    def _is_continue_screen(self):
+        """Return True if the pulse 2 audio cue reports the continue screen."""
+        return bool(self.ram[0x0607] == CONTINUE_SCREEN_PULSE_2)
 
     @property
     def _triforce_pieces(self):
@@ -348,9 +377,9 @@ class Zelda1Env(NESEnv):
         while self._direction is None or bool(self.ram[0x007C]):
             self._frame_advance(0)
 
-    def _wait_for_hearts(self):
-        """Skip the death animation when Link dies."""
-        while self._hearts_remaining <= 0:
+    def _recover_from_zero_health(self):
+        """Advance through the non-terminal death and continue sequence."""
+        while self._needs_death_recovery:
             self._frame_advance(8)
             self._frame_advance(0)
 
@@ -397,19 +426,21 @@ class Zelda1Env(NESEnv):
             None
 
         """
-        self._wait_for_hearts()
+        if done:
+            return
+        self._recover_from_zero_health()
         self._wait_for_scroll()
         self._skip_boring_actions()
         self._skip_inventory_scroll()
 
     def _get_reward(self):
         """Return the reward after a step occurs."""
-        # TODO: define a default reward function
-        return 0
+        return 0.0
 
     def _get_terminated(self):
         """Return True if the episode is over, False otherwise."""
-        # TODO: return True when game-ending logic is implemented.
+        # Zelda1-v0 deliberately treats death recovery as non-terminal. Callers
+        # that need fixed episode lengths should wrap the environment.
         return False
 
     def _get_info(self):

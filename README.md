@@ -92,13 +92,30 @@ Use `--actionspace full` for the default 256-action NES controller space, or
 
 Info about the rewards and info returned by the `step` method.
 
+`Zelda1-v0` is a navigation and state-inspection sandbox. It exposes Zelda RAM
+state through `info`, preserves the full NES action and observation contract,
+and leaves task objectives such as route completion, dungeon progress, or time
+limits to caller-provided wrappers.
+
 ### Reward Function
 
-TODO: The reward function is a complicated work in progress.
+The reward is always `0.0`. This neutral reward is deliberate: the current v0
+environment does not infer long-horizon Zelda progress from partial RAM signals.
+Use external wrappers when training against a specific navigation, combat, or
+collection objective.
 
-The current environment also does not implement Zelda-specific game-ending
-termination logic. The registered `Zelda1-v0` spec does not set
-`max_episode_steps`, so Gymnasium does not add a registration-level
+### Termination and Truncation
+
+The environment has no internal terminal condition. `terminated` is always
+`False` for `Zelda1-v0`; death is treated as a non-terminal recovery sequence.
+When Link reaches zero health, the environment advances through the death and
+continue flow before subsequent gameplay continues.
+
+Low health is characterized by the health meter as being above zero and at or
+below one heart. The pulse 2 audio RAM byte can identify transient death and
+continue cues (`Death Spiral` and `Continue Screen`), but these cues are not
+used as episode lifecycle signals in v0. The registered `Zelda1-v0` spec does
+not set `max_episode_steps`, so Gymnasium does not add a registration-level
 `TimeLimit`; `truncated` remains `False` unless a caller applies an external
 limit wrapper.
 
