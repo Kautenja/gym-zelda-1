@@ -23,7 +23,11 @@
 
 A [Gymnasium](https://gymnasium.farama.org/) environment for The Legend of
 Zelda (i.e., Zelda 1) on The Nintendo Entertainment System (NES) based on
-the [nes-py](https://github.com/Kautenja/nes-py) emulator.
+the [nes-py](https://github.com/Kautenja/nes-py) emulator. This wrapper keeps a
+deliberately narrow, lower-maturity scope: it exposes Zelda RAM state and NES
+control semantics for experimentation, while expecting users to supply their
+own legally obtained ROM and task-specific training wrappers. CI currently
+tests CPython 3.13 and 3.14 on macOS, Linux, and Windows.
 
 ## Installation
 
@@ -32,6 +36,12 @@ The preferred installation of `gym-zelda-1` is from `pip`:
 ```shell
 pip install gym-zelda-1
 ```
+
+Python 3.13 or newer is required. The supported CI targets are CPython 3.13
+and 3.14.
+
+`gym-zelda-1` does not distribute Nintendo ROM assets. Provide your own legally
+obtained Zelda ROM through the package's expected local workflow.
 
 ## Usage
 
@@ -76,6 +86,12 @@ speedup.
 
 `gym_zelda_1` features a command line interface for playing
 environments using either the keyboard, or uniform random movement.
+
+Print the command-line help with:
+
+```shell
+gym_zelda_1 -h
+```
 
 ```shell
 gym_zelda_1 --mode human --actionspace movement
@@ -152,7 +168,7 @@ keys:
 | `has_power_bracelet`  | `bool`  | Whether Link has the power bracelet in his inventory
 | `has_letter`          | `bool`  | Whether Link has the letter in his inventory
 | `is_clock_possessed`  | `bool`  | Whether the clock is possessed
-| `rupees`              | `int`   | The number of rupess Link has collected
+| `rupees`              | `int`   | The number of rupees Link has collected
 | `keys`                | `int`   | The number of keys in Link's inventory
 | `heart_containers`    | `int`   | The number of heart containers that Link has
 | `hearts`              | `float` | The number of remaining health Link has
@@ -164,10 +180,17 @@ keys:
 ## Publishing
 
 PyPI releases are published by the `Publish to PyPI` GitHub Actions workflow
-through PyPI trusted publishing, not by local `twine` credentials. Configure the
-PyPI project publisher with owner `Kautenja`, repository `gym-zelda-1`, workflow
-filename `publish.yml`, and environment `pypi`. Then create a GitHub release
-from a tag matching `pyproject.toml`'s version, with or without a leading `v`.
+through PyPI trusted publishing, not by local `twine` credentials. Configure
+the PyPI project publisher with owner `Kautenja`, repository `gym-zelda-1`,
+workflow filename `publish.yml`, and environment `pypi`.
+
+Releases should follow the current GitHub Actions flow:
+
+1. Create and push a tag that matches `pyproject.toml`'s version, with or
+   without a leading `v`.
+2. Let the CI workflow build and attach release artifacts for that tag.
+3. Publish a GitHub Release from that tag to trigger the trusted-publishing
+   workflow.
 
 ## Citation
 
