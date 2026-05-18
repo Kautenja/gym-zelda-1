@@ -78,8 +78,15 @@ speedup.
 environments using either the keyboard, or uniform random movement.
 
 ```shell
-gym_zelda_1 -m <`human` or `random`>
+gym_zelda_1 --mode human --actionspace movement
+gym_zelda_1 --mode random --steps 500 --render --actionspace movement
+gym_zelda_1 --mode random --steps 5000 --no-render --seed 123 --actionspace movement --no-progress
 ```
+
+Use `--actionspace full` for the default 256-action NES controller space, or
+`--actionspace movement` for the `gym_zelda_1.actions.MOVEMENT` preset with
+`nes_py.wrappers.JoypadSpace`. Human mode always requires rendering; headless
+`--no-render` playback is available in random mode.
 
 ## Step
 
